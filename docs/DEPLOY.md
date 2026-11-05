@@ -17,9 +17,8 @@ Segredos nunca vão para o repositório.
 ## 2. Aplicação no Discord
 
 1. <https://discord.com/developers/applications> → **New Application** → "RPG Phone".
-2. Copie o **Application ID** e cadastre no GitHub em
-   **Settings → Secrets and variables → Actions → Variables → New variable**:
-   `DISCORD_CLIENT_ID` = o ID. Depois rode o workflow de novo (Actions → Run workflow).
+2. O **Application ID** (público) fica em `VITE_DISCORD_CLIENT_ID` no workflow
+   `.github/workflows/deploy.yml` — atual: `1567739574522871808`.
 3. **Activities → Settings → Enable Activities**.
 4. **Activities → URL Mappings**:
 

@@ -23,7 +23,7 @@ jobs:
       # Nunca coloque aqui a chave secreta do Supabase nem o Client Secret do Discord.
       VITE_SUPABASE_URL: https://jggjelbdjhamnpqgclmk.supabase.co
       VITE_SUPABASE_ANON_KEY: sb_publishable_2Kdz9JJptvOy6Pq1UBvz6A_Z90epIze
-      VITE_DISCORD_CLIENT_ID: ${{ vars.DISCORD_CLIENT_ID }}
+      VITE_DISCORD_CLIENT_ID: "1567739574522871808"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
