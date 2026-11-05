@@ -1,0 +1,47 @@
+# Publica o RPG Phone no GitHub Pages a cada envio para a branch main.
+name: Publicar no GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Valores PÚBLICOS (vão para o navegador de qualquer forma).
+      # Nunca coloque aqui a chave secreta do Supabase nem o Client Secret do Discord.
+      VITE_SUPABASE_URL: https://jggjelbdjhamnpqgclmk.supabase.co
+      VITE_SUPABASE_ANON_KEY: sb_publishable_2Kdz9JJptvOy6Pq1UBvz6A_Z90epIze
+      VITE_DISCORD_CLIENT_ID: ${{ vars.DISCORD_CLIENT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

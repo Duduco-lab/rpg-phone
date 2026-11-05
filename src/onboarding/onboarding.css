@@ -1,0 +1,233 @@
+.setup {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--safe-top) + 6px) 14px calc(var(--safe-bottom) + 10px);
+  overflow-y: auto;
+}
+
+.setup-card {
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  border-radius: 26px;
+  background: #ffffffee;
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  box-shadow: 0 20px 50px -12px #0007;
+  padding: 22px 18px 16px;
+  animation: app-open 0.35s var(--ease-out) both;
+  scrollbar-width: thin;
+}
+
+.setup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.setup-form h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.setup-sub {
+  margin: -4px 0 4px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--text-3);
+  line-height: 1.45;
+}
+
+.setup-logo {
+  align-self: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: linear-gradient(145deg, #6d5dfc, #ff5fa2);
+  box-shadow: 0 8px 20px -6px #6d5dfc99;
+}
+
+.setup-avatar {
+  align-self: center;
+}
+
+.setup-submit {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.setup-info {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  background: color-mix(in srgb, #1fb350 14%, transparent);
+  color: #136b30;
+}
+
+.setup-foot {
+  margin: 2px 0 0;
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+
+.setup-loading {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+  color: var(--text-3);
+}
+
+.setup-alt {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.setup-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 14px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.setup-list li + li {
+  border-top: 1px solid var(--divider);
+}
+
+.setup-list button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.setup-list button:hover {
+  background: var(--hover);
+}
+
+.setup-list span {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.setup-list small {
+  font-size: 12px;
+  color: var(--text-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.color-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.color-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: transform 0.15s ease;
+}
+
+.color-dot:hover {
+  transform: scale(1.1);
+}
+
+.color-dot.is-on {
+  outline-color: var(--text);
+}
+
+.code-input {
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  letter-spacing: 0.12em;
+  text-align: center;
+  font-size: 18px !important;
+}
+
+/* ----------------------------------------------------- barra da conta */
+.app-root--online {
+  flex-direction: column;
+}
+
+.account-bar {
+  position: relative;
+  z-index: 50;
+  flex: none;
+  align-self: center;
+  margin: 12px 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100% - 24px);
+  padding: 6px 8px 6px 6px;
+  border-radius: 16px;
+  background: #12141bcc;
+  border: 1px solid #ffffff14;
+  backdrop-filter: blur(16px);
+  font-size: 13px;
+}
+
+.account-bar-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.account-bar-text small {
+  color: #9aa0ad;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-bar button {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #ffffff10;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.account-bar button:hover {
+  background: #ffffff1f;
+}
+
+@media (max-width: 520px) {
+  .account-bar-text small {
+    display: none;
+  }
+}
+
+/* Em telas pequenas a barra externa some: Trocar/Sair ficam em Ajustes. */
+@media (max-width: 600px), (max-height: 600px) {
+  .account-bar {
+    display: none;
+  }
+}

@@ -1,0 +1,290 @@
+/* ------------------------------------------------------------------ base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #07080c;
+  color: #e9ebf1;
+  font-family: 'Inter', 'Segoe UI', Roboto, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+:focus-visible {
+  outline: 2px solid #7aa7ff;
+  outline-offset: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------ app stage */
+.app-root {
+  position: relative;
+  height: 100%;
+  display: flex;
+  background:
+    radial-gradient(60% 50% at 20% 10%, #2a1f5a55 0%, transparent 70%),
+    radial-gradient(50% 50% at 85% 90%, #0f4d5a44 0%, transparent 70%),
+    #07080c;
+}
+
+/* ------------------------------------------------------- shared states */
+.centered-state {
+  height: 100%;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.error-state {
+  color: var(--danger, #e5484d);
+}
+
+.error-state p {
+  margin: 0;
+  color: var(--text-2, #9aa0ad);
+  max-width: 280px;
+}
+
+.text-btn {
+  color: var(--accent, #7aa7ff);
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+
+.spinner {
+  display: inline-block;
+  border-radius: 50%;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+  opacity: 0.6;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.avatar {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  object-fit: cover;
+  user-select: none;
+}
+
+.icon-btn {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-2);
+  transition: background 0.15s ease;
+}
+
+.icon-btn:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.icon-btn:active:not(:disabled) {
+  background: var(--press);
+}
+
+.stage-area {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ------------------------------------------------------- demo panel */
+/* Telas largas: coluna lateral fora da área do telefone. */
+.demo-panel {
+  position: relative;
+  flex: none;
+  align-self: flex-start;
+  margin: 16px 0 16px 16px;
+  max-height: calc(100% - 32px);
+  overflow-y: auto;
+  z-index: 50;
+  width: 260px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #12141bcc;
+  border: 1px solid #ffffff14;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 50px #0008;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.demo-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #c9b8ff;
+}
+
+.demo-head strong {
+  flex: 1;
+  color: #fff;
+}
+
+.demo-close {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #aab;
+}
+
+.demo-close:hover {
+  background: #ffffff14;
+}
+
+.demo-note,
+.demo-tip,
+.demo-feedback {
+  margin: 0;
+  color: #9aa0ad;
+  line-height: 1.45;
+}
+
+.demo-feedback {
+  color: #8fe3b0;
+}
+
+.demo-tip {
+  font-size: 12px;
+  border-top: 1px solid #ffffff10;
+  padding-top: 10px;
+}
+
+.demo-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: #c3c7d2;
+}
+
+.demo-field select {
+  background: #1c1f28;
+  border: 1px solid #ffffff1a;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.demo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: #ffffff10;
+  border: 1px solid #ffffff14;
+  font-weight: 600;
+}
+
+.demo-btn:hover:not(:disabled) {
+  background: #ffffff1c;
+}
+
+.demo-btn--primary {
+  background: #6d5dfc;
+  border-color: transparent;
+  color: #fff;
+}
+
+.demo-btn--primary:hover:not(:disabled) {
+  background: #7c6dff;
+}
+
+.demo-fab {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #12141bcc;
+  border: 1px solid #ffffff14;
+  backdrop-filter: blur(12px);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* Em telas estreitas o painel vira um botão flutuante no rodapé. */
+@media (max-width: 899px) {
+  .demo-panel {
+    position: absolute;
+    margin: 0;
+    top: auto;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    width: auto;
+  }
+
+  .demo-fab {
+    top: auto;
+    bottom: 90px;
+    left: auto;
+    right: 12px;
+  }
+}

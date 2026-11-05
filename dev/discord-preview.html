@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Simulação — RPG Phone como Activity</title>
+<!--
+  SIMULAÇÃO LOCAL (somente desenvolvimento).
+  Aproxima o layout de uma chamada de voz com uma Activity aberta, para avaliar
+  tamanho e encaixe do RPG Phone. Não é a interface real do Discord e não entra
+  no build publicado. O app roda de verdade no iframe (mesma sessão do navegador).
+-->
+<style>
+  :root {
+    --rail: #1e1f22; --side: #2b2d31; --main: #313338; --stage: #000;
+    --text: #dbdee1; --muted: #949ba4; --hover: #35373c; --accent: #5865f2; --green: #23a55a; --red: #da373c;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--rail); color: var(--text);
+    font-family: 'Segoe UI', 'gg sans', system-ui, sans-serif; font-size: 14px; overflow: hidden; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+  .bar { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 10;
+    display: flex; gap: 6px; padding: 5px; border-radius: 10px; background: #111214ee; box-shadow: 0 6px 20px #0008; }
+  .bar button { padding: 6px 12px; border-radius: 7px; color: var(--muted); font-weight: 600; font-size: 13px; }
+  .bar button.on { background: var(--accent); color: #fff; }
+  .bar span { align-self: center; padding: 0 8px; color: var(--muted); font-size: 12px; }
+
+  /* ----------------------------------------------------- desktop */
+  .desktop { display: grid; grid-template-columns: 72px 240px 1fr; height: 100%; }
+  .rail { background: var(--rail); display: flex; flex-direction: column; align-items: center; gap: 8px; padding-top: 12px; }
+  .srv { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: #fff; background: var(--main); }
+  .srv.on { border-radius: 16px; background: #7b5cd6; }
+  .srv.home { background: var(--accent); border-radius: 16px; }
+  .sep { width: 32px; height: 2px; background: var(--side); border-radius: 1px; }
+
+  .side { background: var(--side); display: flex; flex-direction: column; }
+  .side h2 { margin: 0; padding: 14px 16px; font-size: 15px; border-bottom: 1px solid #1f2023; }
+  .cat { margin: 18px 8px 4px 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; color: var(--muted); }
+  .ch { margin: 1px 8px; padding: 6px 8px; border-radius: 4px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+  .ch.on { background: var(--hover); color: #fff; }
+  .voice-users { margin: 0 8px 0 34px; }
+  .vu { display: flex; align-items: center; gap: 8px; padding: 4px 6px; color: var(--muted); font-size: 13px; }
+  .vu .tag { margin-left: auto; font-size: 10px; font-weight: 700; color: #fff; background: var(--red); padding: 1px 5px; border-radius: 4px; }
+  .me { margin-top: auto; background: #232428; padding: 8px; display: flex; align-items: center; gap: 8px; }
+  .me small { display: block; color: var(--muted); font-size: 11px; }
+
+  .av { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 700; color: #fff; flex: none; }
+  .av.speaking { box-shadow: 0 0 0 2px var(--green); }
+
+  .main { background: var(--main); display: flex; flex-direction: column; min-width: 0; }
+  .top { height: 48px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid #26282c; font-weight: 600; }
+  .top small { color: var(--muted); font-weight: 400; }
+  .stage { flex: 1; min-height: 0; background: var(--stage); display: flex; flex-direction: column; padding: 12px; gap: 12px; }
+  .activity { flex: 1; min-height: 0; border-radius: 8px; overflow: hidden; position: relative; background: #000; }
+  .activity iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .act-label { position: absolute; top: 8px; left: 8px; z-index: 2; padding: 4px 8px; border-radius: 6px; background: #000a; font-size: 12px; font-weight: 600; pointer-events: none; }
+  .tiles { flex: none; display: flex; gap: 8px; justify-content: center; }
+  .tile { width: 120px; height: 68px; border-radius: 8px; background: #2b2d31; display: grid; place-items: center; position: relative; }
+  .tile .av { width: 40px; height: 40px; font-size: 14px; }
+  .tile span { position: absolute; left: 6px; bottom: 4px; font-size: 11px; background: #000a; padding: 1px 5px; border-radius: 4px; }
+  .controls { flex: none; display: flex; justify-content: center; gap: 10px; }
+  .ctl { width: 52px; height: 44px; border-radius: 22px; background: #2b2d31; display: grid; place-items: center; font-size: 18px; }
+  .ctl.leave { background: var(--red); }
+
+  /* ------------------------------------------------------ mobile */
+  .mobile-wrap { height: 100%; display: none; align-items: center; justify-content: center; background: #111214; }
+  .handset { width: 390px; height: 800px; max-height: calc(100vh - 70px); border-radius: 40px; padding: 10px; background: #2a2b30;
+    box-shadow: 0 30px 60px #000a; display: flex; }
+  .handset-screen { flex: 1; border-radius: 32px; overflow: hidden; background: var(--main); display: flex; flex-direction: column; }
+  .m-top { flex: none; padding: 34px 14px 10px; display: flex; align-items: center; gap: 8px; background: #1e1f22; font-weight: 600; }
+  .m-top small { color: var(--muted); font-weight: 400; }
+  .m-act { flex: 1; min-height: 0; background: #000; }
+  .m-act iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .m-ctl { flex: none; display: flex; justify-content: center; gap: 14px; padding: 12px 0 22px; background: #1e1f22; }
+
+  body.is-mobile .desktop { display: none; }
+  body.is-mobile .mobile-wrap { display: flex; }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <button id="btn-desktop" class="on">Computador</button>
+    <button id="btn-mobile">Celular</button>
+    <span>Simulação local — não é a interface real</span>
+  </div>
+
+  <!-- Computador: canal de voz com a Activity aberta -->
+  <div class="desktop">
+    <nav class="rail">
+      <div class="srv home">◎</div>
+      <div class="sep"></div>
+      <div class="srv on">PS</div>
+      <div class="srv">D&D</div>
+      <div class="srv">+</div>
+    </nav>
+    <aside class="side">
+      <h2>Porto Sereno RPG</h2>
+      <div class="cat">Canais de texto</div>
+      <div class="ch"># regras</div>
+      <div class="ch"># fichas</div>
+      <div class="ch"># off-topic</div>
+      <div class="cat">Canais de voz</div>
+      <div class="ch on">🔊 Sessão de sexta</div>
+      <div class="voice-users">
+        <div class="vu"><span class="av speaking" style="background:#5f6b7a">ME</span> Mestre</div>
+        <div class="vu"><span class="av" style="background:#5f6b7a">MP</span> Mark Phillips <span class="tag">AO VIVO</span></div>
+        <div class="vu"><span class="av" style="background:#c2457a">CL</span> Clara</div>
+        <div class="vu"><span class="av" style="background:#1f9b8a">IT</span> Íris</div>
+      </div>
+      <div class="ch">🔊 Bate-papo</div>
+      <div class="me">
+        <span class="av" style="background:#5f6b7a;width:32px;height:32px">MP</span>
+        <div><b>mark</b><small>Em voz</small></div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="top">🔊 Sessão de sexta <small>· RPG Phone</small></div>
+      <div class="stage">
+        <div class="activity">
+          <span class="act-label">📱 RPG Phone</span>
+          <iframe id="frame-desktop" title="RPG Phone (Activity)"></iframe>
+        </div>
+        <div class="tiles">
+          <div class="tile"><span class="av speaking" style="background:#5f6b7a">ME</span><span>Mestre</span></div>
+          <div class="tile"><span class="av" style="background:#5f6b7a">MP</span><span>Mark</span></div>
+          <div class="tile"><span class="av" style="background:#c2457a">CL</span><span>Clara</span></div>
+          <div class="tile"><span class="av" style="background:#1f9b8a">IT</span><span>Íris</span></div>
+        </div>
+        <div class="controls">
+          <div class="ctl">🎙️</div><div class="ctl">📷</div><div class="ctl">🖥️</div><div class="ctl">🚀</div><div class="ctl leave">📞</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Celular: Activity em tela cheia no app móvel -->
+  <div class="mobile-wrap">
+    <div class="handset">
+      <div class="handset-screen">
+        <div class="m-top">⌄ 🔊 Sessão de sexta <small>· RPG Phone</small></div>
+        <div class="m-act"><iframe id="frame-mobile" title="RPG Phone (Activity no celular)"></iframe></div>
+        <div class="m-ctl"><div class="ctl">🎙️</div><div class="ctl">🔈</div><div class="ctl leave">📞</div></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Carrega o app só no modo visível (evita duas instâncias abertas ao mesmo tempo).
+  const frames = { desktop: document.getElementById('frame-desktop'), mobile: document.getElementById('frame-mobile') };
+  function show(mode) {
+    document.body.classList.toggle('is-mobile', mode === 'mobile');
+    document.getElementById('btn-desktop').classList.toggle('on', mode === 'desktop');
+    document.getElementById('btn-mobile').classList.toggle('on', mode === 'mobile');
+    for (const [k, f] of Object.entries(frames)) {
+      if (k === mode) { if (!f.src) f.src = '/'; } else { f.removeAttribute('src'); }
+    }
+  }
+  document.getElementById('btn-desktop').onclick = () => show('desktop');
+  document.getElementById('btn-mobile').onclick = () => show('mobile');
+  show('desktop');
+</script>
+</body>
+</html>
