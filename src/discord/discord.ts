@@ -10,7 +10,14 @@
  * O SDK é carregado sob demanda: no navegador comum ele nem é baixado.
  */
 
-const CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID as string | undefined;
+/**
+ * ID da aplicação do Discord. O Discord abre a Activity em <ID>.discordsays.com,
+ * então o mesmo site serve qualquer aplicação; a variável de ambiente é só reserva.
+ */
+function resolveClientId(): string | undefined {
+  const fromHost = /^(\d{15,25})\.discordsays\.com$/.exec(window.location.hostname)?.[1];
+  return fromHost ?? (import.meta.env.VITE_DISCORD_CLIENT_ID as string | undefined);
+}
 
 /** O Discord abre a Activity com `frame_id` na URL. */
 export function isInDiscord(): boolean {
@@ -31,10 +38,11 @@ export async function setupDiscord(supabaseUrl: string | undefined): Promise<voi
     patchUrlMappings([{ prefix: '/supabase', target: host }], { patchFetch: true, patchWebSocket: true, patchXhr: true });
   }
 
-  if (!CLIENT_ID) {
-    console.warn('VITE_DISCORD_CLIENT_ID ausente: a Activity pode não concluir a inicialização.');
+  const clientId = resolveClientId();
+  if (!clientId) {
+    console.warn('ID da aplicação do Discord não encontrado: a Activity pode não concluir a inicialização.');
     return;
   }
-  const sdk = new DiscordSDK(CLIENT_ID);
+  const sdk = new DiscordSDK(clientId);
   await sdk.ready();
 }
