@@ -1,4 +1,4 @@
-import { BadgeCheck, ChevronLeft, Heart, MessageCircle, Newspaper, Repeat2, RotateCw } from 'lucide-react';
+import { BadgeCheck, Bird, ChevronLeft, Heart, MessageCircle, Newspaper, Repeat2, RotateCw } from 'lucide-react';
 import { Fragment, useCallback, useEffect, useState, type ReactNode } from 'react';
 import { countryName } from '../../domain/countries';
 import { useNow } from '../../hooks/useNow';
@@ -13,7 +13,6 @@ import './rumor.css';
 
 const TABS: { id: FeedTab; label: string }[] = [
   { id: 'para_voce', label: 'Para você' },
-  { id: 'sobre', label: 'Sobre você' },
   { id: 'noticias', label: 'Notícias' },
 ];
 
@@ -81,7 +80,7 @@ function PostCard({ post, now }: { post: SocialPost; now: Date }) {
   );
 }
 
-/** Rumor — a rede social do mundo do jogo. Somente leitura nesta versão. */
+/** Twixer — a rede social do mundo do jogo. Somente leitura nesta versão. */
 export function RumorApp() {
   const { goHome } = usePhone();
   const { backend, activeCharacter } = useSession();
@@ -124,7 +123,9 @@ export function RumorApp() {
           <IconButton label="Voltar ao início" onClick={goHome}>
             <ChevronLeft size={22} />
           </IconButton>
-          <span className="rumor-logo">rumor</span>
+          <span className="rumor-logo" aria-label="Twixer">
+            <Bird size={26} strokeWidth={2.2} />
+          </span>
           <IconButton label="Atualizar" onClick={() => void load(true)} disabled={refreshing || status === 'loading'}>
             <RotateCw size={18} className={refreshing ? 'spin' : ''} />
           </IconButton>
@@ -146,12 +147,12 @@ export function RumorApp() {
       </header>
 
       <div className="rumor-scroll">
-        {status === 'loading' && <CenteredSpinner label="Carregando o Rumor" />}
+        {status === 'loading' && <CenteredSpinner label="Carregando o Twixer" />}
         {status === 'error' && <ErrorState message={error ?? 'Erro ao carregar o feed.'} onRetry={() => void load(false)} />}
         {status === 'ready' && feed && !feed.countryCode && (
           <div className="rumor-empty">
             <p>
-              Defina sua <b>nacionalidade</b> em <b>Ajustes → Editar perfil</b> para começar a aparecer no Rumor e
+              Defina sua <b>nacionalidade</b> em <b>Ajustes → Editar perfil</b> para começar a aparecer no Twixer e
               receber as notícias do seu país.
             </p>
           </div>

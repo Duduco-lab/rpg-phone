@@ -1,5 +1,5 @@
 import {
-  AtSign,
+  Bird,
   CalendarDays,
   Contact,
   Image,
@@ -36,9 +36,9 @@ export const APPS: Record<AppId, AppDefinition> = {
   },
   social: {
     id: 'social',
-    name: 'Rumor',
-    icon: AtSign,
-    background: 'linear-gradient(145deg, #ff3d6e 0%, #ff9a3d 100%)',
+    name: 'Twixer',
+    icon: Bird,
+    background: 'linear-gradient(145deg, #4fb4ff 0%, #1677e8 100%)',
     status: 'available',
     plannedFeatures: ['Disponível no modo online (Supabase): fofocas e notícias do seu país'],
   },

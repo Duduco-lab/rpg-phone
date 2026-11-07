@@ -1,4 +1,4 @@
-/* Rumor — rede social fictícia */
+/* Twixer — rede social fictícia do jogo */
 
 .rumor {
   height: 100%;
@@ -24,18 +24,15 @@
 }
 
 .rumor-logo {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  background: linear-gradient(120deg, #ff3d6e, #ff9a3d);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #1d8cf2;
 }
 
 .rumor-tabs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .rumor-tabs button {
@@ -63,7 +60,7 @@
   height: 3px;
   margin-left: -23px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #ff3d6e, #ff9a3d);
+  background: #1d8cf2;
 }
 
 .rumor-scroll {
@@ -93,7 +90,7 @@
 }
 
 .rumor-post.is-about-me {
-  background: color-mix(in srgb, #ff3d6e 5%, transparent);
+  background: color-mix(in srgb, #1d8cf2 6%, transparent);
 }
 
 .rumor-avatar {
@@ -140,7 +137,7 @@
 
 .rumor-verified {
   flex: none;
-  color: #ff5a5f;
+  color: #1d8cf2;
 }
 
 .rumor-handle {
@@ -166,11 +163,11 @@
 }
 
 .rumor-tag {
-  color: #e8335e;
+  color: #1677e8;
 }
 
 .screen[data-theme='dark'] .rumor-tag {
-  color: #ff7a98;
+  color: #6cc0ff;
 }
 
 .rumor-stats {

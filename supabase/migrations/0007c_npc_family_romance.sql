@@ -112,7 +112,7 @@ Você não mudou nada. Já eu, nem se fala. 😅
 Às vezes eu esqueço de falar, mas sei o quanto você faz por mim.
 
 {npc}'),
-('filho', 'spontaneous', 'geral', 'Você viu o que falaram?', '{Pai_mae}, você viu o que andam falando da nossa família no Rumor?
+('filho', 'spontaneous', 'geral', 'Você viu o que falaram?', '{Pai_mae}, você viu o que andam falando da nossa família no Twixer?
 
 Não liga pra isso, tá? Eu sei quem você é.
 
@@ -316,7 +316,7 @@ Não é cobrança. É só cansaço.
 Apague este e-mail depois de ler.
 
 {npc}'),
-('romance', 'spontaneous', 'geral', 'Você viu o Rumor?', 'Viu o que estão dizendo de nós no Rumor?
+('romance', 'spontaneous', 'geral', 'Você viu o Twixer?', 'Viu o que estão dizendo de nós no Twixer?
 
 Rimos disso juntos… ou devíamos estar com medo?
 

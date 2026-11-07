@@ -28,7 +28,7 @@ export interface CharacterProfile {
   avatarColor: string;
   active: boolean;
   gender: Gender;
-  /** Nacionalidade (código de `domain/countries`). Define as notícias do Rumor. */
+  /** Nacionalidade (código de `domain/countries`). Define as notícias do Twixer. */
   countryCode: string | null;
   /** Título ou posição social (ex.: "Imperador germânico"). */
   title: string;

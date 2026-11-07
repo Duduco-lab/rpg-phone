@@ -76,7 +76,7 @@ export interface SocialFeed {
   posts: SocialPost[];
 }
 
-/** Rumor: rede social fictícia (posts gerados a partir do perfil e do círculo). */
+/** Twixer: rede social fictícia (posts gerados a partir do perfil e do círculo). */
 export interface SocialClient {
   feed(characterId: CharacterId, tab: FeedTab): Promise<SocialFeed>;
 }

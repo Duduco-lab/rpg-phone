@@ -46,7 +46,7 @@ function AppHost() {
   }, [currentApp, rendered]);
 
   if (!rendered) return null;
-  // O Rumor depende do banco: no modo demonstração mostra a tela "em desenvolvimento".
+  // O Twixer depende do banco: no modo demonstração mostra a tela "em desenvolvimento".
   const Component = rendered === 'social' && !backend.social ? undefined : AVAILABLE_APPS[rendered];
   return (
     <div key={rendered} className={`app-layer ${closing ? 'is-closing' : 'is-opening'}`}>

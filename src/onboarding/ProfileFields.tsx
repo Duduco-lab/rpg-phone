@@ -12,7 +12,7 @@ interface Props {
   onChange: (next: ProfileExtras) => void;
 }
 
-/** Gênero, nacionalidade e título — usados nos textos dos NPCs e no Rumor. */
+/** Gênero, nacionalidade e título — usados nos textos dos NPCs e no Twixer. */
 export function ProfileFields({ value, onChange }: Props) {
   return (
     <>
@@ -52,7 +52,7 @@ export function ProfileFields({ value, onChange }: Props) {
         />
       </label>
       <p className="field-hint">
-        A nacionalidade e o círculo (cônjuge, filhos, romances…) definem as notícias e fofocas do Rumor sobre você.
+        A nacionalidade e o círculo (cônjuge, filhos, romances…) definem as notícias e fofocas do Twixer sobre você.
       </p>
     </>
   );
