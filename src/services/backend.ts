@@ -73,6 +73,8 @@ export interface SocialPost {
 
 export interface SocialFeed {
   countryCode: string | null;
+  /** Nome do reino/império das notícias (ex.: "Império Germânico" para Alemanha e Áustria). */
+  realmName?: string | null;
   posts: SocialPost[];
 }
 

@@ -114,7 +114,7 @@ export function RumorApp() {
     void load(false);
   }, [load]);
 
-  const country = countryName(feed?.countryCode);
+  const country = feed?.realmName ?? countryName(feed?.countryCode);
 
   return (
     <div className="rumor">
