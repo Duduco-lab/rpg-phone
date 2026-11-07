@@ -1,4 +1,5 @@
 import {
+  AtSign,
   CalendarDays,
   Contact,
   Image,
@@ -9,7 +10,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 
-export type AppId = 'email' | 'contacts' | 'phone' | 'messages' | 'gallery' | 'calendar' | 'settings';
+export type AppId = 'email' | 'contacts' | 'social' | 'phone' | 'messages' | 'gallery' | 'calendar' | 'settings';
 
 export type AppStatus = 'available' | 'planned';
 
@@ -32,6 +33,14 @@ export const APPS: Record<AppId, AppDefinition> = {
     icon: Mail,
     background: 'linear-gradient(145deg, #ff6a55 0%, #e5304f 100%)',
     status: 'available',
+  },
+  social: {
+    id: 'social',
+    name: 'Rumor',
+    icon: AtSign,
+    background: 'linear-gradient(145deg, #ff3d6e 0%, #ff9a3d 100%)',
+    status: 'available',
+    plannedFeatures: ['Disponível no modo online (Supabase): fofocas e notícias do seu país'],
   },
   contacts: {
     id: 'contacts',
@@ -85,5 +94,5 @@ export const APPS: Record<AppId, AppDefinition> = {
   },
 };
 
-export const HOME_GRID: AppId[] = ['gallery', 'calendar', 'settings'];
+export const HOME_GRID: AppId[] = ['social', 'gallery', 'calendar', 'settings'];
 export const DOCK: AppId[] = ['phone', 'messages', 'email', 'contacts'];

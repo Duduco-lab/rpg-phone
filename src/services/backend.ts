@@ -1,4 +1,4 @@
-import type { CharacterId, CharacterProfile } from '../domain/character';
+import type { CharacterId, CharacterProfile, Gender } from '../domain/character';
 import type { CircleMember, NewCircleMemberInput } from '../domain/circle';
 import type {
   ConversationId,
@@ -50,6 +50,35 @@ export interface NewCharacterInput {
   avatarColor: string | null;
   /** E-mail do personagem escolhido pelo jogador. Vazio = gerado pelo sistema. */
   email: string;
+  gender: Gender;
+  countryCode: string | null;
+  title: string;
+}
+
+export type FeedTab = 'para_voce' | 'sobre' | 'noticias';
+
+export interface SocialPost {
+  id: string;
+  authorName: string;
+  authorHandle: string;
+  authorKind: 'pessoa' | 'fa' | 'fofoca' | 'imprensa';
+  body: string;
+  likes: number;
+  reposts: number;
+  replies: number;
+  createdAt: string;
+  category: string;
+  aboutMe: boolean;
+}
+
+export interface SocialFeed {
+  countryCode: string | null;
+  posts: SocialPost[];
+}
+
+/** Rumor: rede social fictícia (posts gerados a partir do perfil e do círculo). */
+export interface SocialClient {
+  feed(characterId: CharacterId, tab: FeedTab): Promise<SocialFeed>;
 }
 
 /** Conta do jogador e personagens que ele controla (só existe com backend real). */
@@ -85,6 +114,8 @@ export interface DataBackend {
   account?: AccountClient;
   /** Ausente no modo demonstração. */
   circle?: CircleClient;
+  /** Ausente no modo demonstração. */
+  social?: SocialClient;
 }
 
 export class BackendError extends Error {

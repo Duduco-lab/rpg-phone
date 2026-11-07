@@ -1,6 +1,6 @@
 import { Copy, Plus, Trash2, UserPlus, Users } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { fullName, type CharacterId, type CharacterProfile } from '../domain/character';
+import { fullName, GENDER_LABELS, type CharacterId, type CharacterProfile, type Gender } from '../domain/character';
 import {
   guessRelationKind,
   RELATION_KIND_LABELS,
@@ -26,6 +26,18 @@ interface Props {
 
 type Mode = 'npc' | 'existing';
 
+/** Sugere o gênero pela relação digitada ("esposa" → feminino). */
+function guessGender(label: string): Gender {
+  const f = label
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .trim();
+  if (/^(esposa|mulher|namorada|noiva|mae|madrasta|filha|enteada|irma|tia|prima|avo$|sogra|cunhada|amiga|chefa|amante|ex-?esposa|ex-?namorada)/.test(f)) return 'f';
+  if (/^(marido|esposo|namorado|noivo|pai|padrasto|filho|enteado|irmao|tio|primo|sogro|cunhado|amigo|chefe|ex-?marido|ex-?namorado)/.test(f)) return 'm';
+  return 'n';
+}
+
 function AddMemberForm({
   client,
   characterId,
@@ -47,12 +59,15 @@ function AddMemberForm({
   const [label, setLabel] = useState('');
   const [kind, setKind] = useState<RelationKind>('outro');
   const [kindTouched, setKindTouched] = useState(false);
+  const [gender, setGender] = useState<Gender>('n');
+  const [genderTouched, setGenderTouched] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const onLabel = (value: string) => {
     setLabel(value);
     if (!kindTouched) setKind(guessRelationKind(value) ?? 'outro');
+    if (!genderTouched) setGender(guessGender(value));
   };
 
   const submit = async () => {
@@ -69,6 +84,7 @@ function AddMemberForm({
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         description: description.trim(),
+        gender,
       });
       onDone();
     } catch (e) {
@@ -113,6 +129,22 @@ function AddMemberForm({
               <input value={lastName} onChange={(e) => setLastName(e.target.value)} maxLength={60} />
             </label>
           </div>
+          <label className="field">
+            <span>Gênero</span>
+            <select
+              value={gender}
+              onChange={(e) => {
+                setGender(e.target.value as Gender);
+                setGenderTouched(true);
+              }}
+            >
+              {(Object.keys(GENDER_LABELS) as Gender[]).map((g) => (
+                <option key={g} value={g}>
+                  {GENDER_LABELS[g]}
+                </option>
+              ))}
+            </select>
+          </label>
           <label className="field">
             <span>Sobre (opcional)</span>
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} maxLength={600} rows={2} />

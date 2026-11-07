@@ -1,4 +1,4 @@
-import type { CharacterProfile } from './character';
+import type { CharacterProfile, Gender } from './character';
 
 /** O que a pessoa do círculo É para o personagem (define o tom dos e-mails simulados). */
 export type RelationKind =
@@ -6,6 +6,7 @@ export type RelationKind =
   | 'filho'
   | 'irmao'
   | 'parceiro'
+  | 'romance'
   | 'ex'
   | 'amigo'
   | 'colega'
@@ -19,6 +20,7 @@ export const RELATION_KIND_LABELS: Record<RelationKind, string> = {
   filho: 'Filho(a)',
   irmao: 'Irmão(ã)',
   parceiro: 'Cônjuge / namorado(a)',
+  romance: 'Romance / caso secreto',
   ex: 'Ex',
   amigo: 'Amigo(a)',
   colega: 'Colega de trabalho',
@@ -51,6 +53,8 @@ export interface NewCircleMemberInput {
   firstName: string;
   lastName: string;
   description: string;
+  /** Gênero do NPC novo (concordância nos textos: "o marido" / "a esposa"). */
+  gender: Gender;
 }
 
 const fold = (s: string) =>
@@ -65,6 +69,7 @@ const GUESSES: [RegExp, RelationKind][] = [
   [/^(filh|enteado|enteada)/, 'filho'],
   [/^(irma|meio[- ]irma)/, 'irmao'],
   [/^(marido|esposa|esposo|mulher|namorad|noiv|conjuge|companheir|parceir)/, 'parceiro'],
+  [/^(amante|caso|affair|romance|crush|paquera)/, 'romance'],
   [/^ex\b|^ex-/, 'ex'],
   [/^(amig|melhor amig|parceiro de)/, 'amigo'],
   [/^(colega|socio|socia|funcionari|assistente|parceiro de trabalho)/, 'colega'],

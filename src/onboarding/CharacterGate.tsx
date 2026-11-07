@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { CircleEditor } from '../circle/CircleEditor';
 import { fullName, type CharacterProfile } from '../domain/character';
 import { isValidAddress } from '../domain/email';
+import { ProfileFields, type ProfileExtras } from './ProfileFields';
 import { errorMessage, type AccountClient, type CircleClient, type DirectoryClient } from '../services/backend';
 import { Avatar } from '../ui/Avatar';
 import { Spinner } from '../ui/Spinner';
@@ -31,6 +32,7 @@ function CreateForm({ account, onCreated, onCancel }: { account: AccountClient; 
   const [description, setDescription] = useState('');
   const [color, setColor] = useState(COLORS[0]!);
   const [email, setEmail] = useState('');
+  const [extras, setExtras] = useState<ProfileExtras>({ gender: 'n', countryCode: null, title: '' });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,7 +42,7 @@ function CreateForm({ account, onCreated, onCancel }: { account: AccountClient; 
     if (email.trim() && !isValidAddress(email)) return setError('E-mail inválido.');
     setBusy(true);
     try {
-      onCreated(await account.createCharacter({ firstName, lastName, description, avatarColor: color, email }));
+      onCreated(await account.createCharacter({ firstName, lastName, description, avatarColor: color, email, ...extras }));
     } catch (e) {
       setError(errorMessage(e));
       setBusy(false);
@@ -79,6 +81,7 @@ function CreateForm({ account, onCreated, onCancel }: { account: AccountClient; 
           autoComplete="off"
         />
       </label>
+      <ProfileFields value={extras} onChange={setExtras} />
       <label className="field">
         <span>Descrição</span>
         <textarea value={description} onChange={(e) => setDescription(e.target.value)} maxLength={600} rows={3} placeholder="Quem é, o que faz…" />

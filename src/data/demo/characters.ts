@@ -9,6 +9,9 @@ export const DEMO_CHARACTERS: CharacterProfile[] = [
   {
     id: 'demo-helena',
     kind: 'player',
+    gender: 'n',
+    countryCode: null,
+    title: '',
     firstName: 'Helena',
     lastName: 'Vasconcelos',
     email: 'helena.vasconcelos@rpgphone.app',
@@ -21,6 +24,9 @@ export const DEMO_CHARACTERS: CharacterProfile[] = [
   {
     id: 'demo-rafael',
     kind: 'player',
+    gender: 'n',
+    countryCode: null,
+    title: '',
     firstName: 'Rafael',
     lastName: 'Moreau',
     email: 'rafael.moreau@rpgphone.app',
@@ -33,6 +39,9 @@ export const DEMO_CHARACTERS: CharacterProfile[] = [
   {
     id: 'demo-iris',
     kind: 'player',
+    gender: 'n',
+    countryCode: null,
+    title: '',
     firstName: 'Íris',
     lastName: 'Tanaka',
     email: 'iris.tanaka@rpgphone.app',
@@ -45,6 +54,9 @@ export const DEMO_CHARACTERS: CharacterProfile[] = [
   {
     id: 'demo-augusto',
     kind: 'player',
+    gender: 'n',
+    countryCode: null,
+    title: '',
     firstName: 'Augusto',
     lastName: 'Brandão',
     email: 'augusto.brandao@rpgphone.app',
@@ -57,6 +69,9 @@ export const DEMO_CHARACTERS: CharacterProfile[] = [
   {
     id: 'demo-clara',
     kind: 'player',
+    gender: 'n',
+    countryCode: null,
+    title: '',
     firstName: 'Clara',
     lastName: 'Lins',
     email: 'clara.lins@rpgphone.app',
@@ -69,6 +84,9 @@ export const DEMO_CHARACTERS: CharacterProfile[] = [
   {
     id: 'demo-duarte',
     kind: 'player',
+    gender: 'n',
+    countryCode: null,
+    title: '',
     firstName: 'Otávio',
     lastName: 'Duarte',
     email: 'otavio.duarte@rpgphone.app',

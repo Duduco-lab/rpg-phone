@@ -3,13 +3,22 @@ export type CharacterId = string;
 /** `player` = controlado por um jogador; `npc` = simulado pelo sistema. */
 export type CharacterKind = 'player' | 'npc';
 
+/** Usado para concordância nos textos ("ela", "a esposa", filhos chamando de "mãe"). */
+export type Gender = 'm' | 'f' | 'n';
+
+export const GENDER_LABELS: Record<Gender, string> = {
+  m: 'Masculino',
+  f: 'Feminino',
+  n: 'Neutro / não informar',
+};
+
 /** Perfil público de um personagem (o que outros personagens podem ver). */
 export interface CharacterProfile {
   id: CharacterId;
   kind: CharacterKind;
   firstName: string;
   lastName: string;
-  /** Endereço único gerado e administrado pelo sistema (ex.: nome@rpgphone.app). */
+  /** Endereço do personagem dentro do jogo (escolhido pelo jogador ou gerado). */
   email: string;
   /** Número telefônico fictício. */
   phoneNumber: string;
@@ -18,6 +27,11 @@ export interface CharacterProfile {
   /** Cor de fundo do avatar quando não há imagem. */
   avatarColor: string;
   active: boolean;
+  gender: Gender;
+  /** Nacionalidade (código de `domain/countries`). Define as notícias do Rumor. */
+  countryCode: string | null;
+  /** Título ou posição social (ex.: "Imperador germânico"). */
+  title: string;
 }
 
 export function fullName(c: Pick<CharacterProfile, 'firstName' | 'lastName'>): string {

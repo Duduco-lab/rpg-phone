@@ -2,6 +2,7 @@ import { ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
 import { fullName, type CharacterProfile } from '../../domain/character';
 import { isValidAddress } from '../../domain/email';
+import { ProfileFields, type ProfileExtras } from '../../onboarding/ProfileFields';
 import { useMailbox } from '../../features/email/MailboxProvider';
 import { errorMessage, type AccountClient } from '../../services/backend';
 import { useSession } from '../../session/SessionContext';
@@ -26,6 +27,11 @@ export function ProfileEditor({ account, character, onClose }: Props) {
   const [description, setDescription] = useState(character.description);
   const [color, setColor] = useState(character.avatarColor);
   const [email, setEmail] = useState(character.email);
+  const [extras, setExtras] = useState<ProfileExtras>({
+    gender: character.gender ?? 'n',
+    countryCode: character.countryCode ?? null,
+    title: character.title ?? '',
+  });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,6 +49,7 @@ export function ProfileEditor({ account, character, onClose }: Props) {
         description,
         avatarColor: color,
         email: emailChanged ? email : '',
+        ...extras,
       });
       reload();
       await mailbox.reload();
@@ -82,6 +89,7 @@ export function ProfileEditor({ account, character, onClose }: Props) {
             <input value={lastName} onChange={(e) => setLastName(e.target.value)} maxLength={60} />
           </label>
         </div>
+        <ProfileFields value={extras} onChange={setExtras} />
         <label className="field">
           <span>Descrição</span>
           <textarea value={description} onChange={(e) => setDescription(e.target.value)} maxLength={600} rows={3} />

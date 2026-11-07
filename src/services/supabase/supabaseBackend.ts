@@ -9,6 +9,8 @@ import {
   type CircleClient,
   type DataBackend,
   type MailboxClient,
+  type SocialClient,
+  type SocialFeed,
 } from '../backend';
 
 /**
@@ -104,6 +106,9 @@ export function createSupabaseBackend(url: string, anonKey: string): DataBackend
         p_description: input.description,
         p_avatar_color: input.avatarColor,
         p_email: input.email.trim() || null,
+        p_gender: input.gender,
+        p_country: input.countryCode,
+        p_title: input.title.trim(),
       }),
     updateCharacter: (id, input) =>
       rpc<CharacterProfile>('update_character', {
@@ -113,6 +118,9 @@ export function createSupabaseBackend(url: string, anonKey: string): DataBackend
         p_description: input.description,
         p_avatar_color: input.avatarColor,
         p_email: input.email.trim() || null,
+        p_gender: input.gender,
+        p_country: input.countryCode,
+        p_title: input.title.trim(),
       }),
     claimNpc: (code) => rpc<CharacterProfile>('claim_npc', { p_code: code }),
   };
@@ -128,10 +136,18 @@ export function createSupabaseBackend(url: string, anonKey: string): DataBackend
         p_first_name: input.firstName,
         p_last_name: input.lastName,
         p_description: input.description,
+        p_gender: input.gender,
       });
     },
     async remove(characterId, memberId) {
       await rpc('remove_circle_member', { p_character: characterId, p_relationship: memberId });
+    },
+  };
+
+  const social: SocialClient = {
+    async feed(characterId, tab) {
+      const data = await rpc<SocialFeed>('get_feed', { p_character: characterId, p_tab: tab });
+      return { ...data, posts: data.posts.map((p) => ({ ...p, createdAt: iso(p.createdAt) })) };
     },
   };
 
@@ -233,5 +249,6 @@ export function createSupabaseBackend(url: string, anonKey: string): DataBackend
     mailboxFor,
     account,
     circle,
+    social,
   };
 }

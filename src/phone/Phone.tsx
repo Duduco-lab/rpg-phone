@@ -3,6 +3,7 @@ import { ContactsApp } from '../apps/contacts/ContactsApp';
 import { EmailApp } from '../apps/email/EmailApp';
 import { PlannedApp } from '../apps/placeholder/PlannedApp';
 import { SettingsApp } from '../apps/settings/SettingsApp';
+import { RumorApp } from '../apps/social/RumorApp';
 import type { CharacterProfile } from '../domain/character';
 import { MailboxProvider } from '../features/email/MailboxProvider';
 import { useSession } from '../session/SessionContext';
@@ -20,10 +21,12 @@ const AVAILABLE_APPS: Partial<Record<AppId, ComponentType>> = {
   email: EmailApp,
   contacts: ContactsApp,
   settings: SettingsApp,
+  social: RumorApp,
 };
 
 function AppHost() {
   const { currentApp } = usePhone();
+  const { backend } = useSession();
   const [rendered, setRendered] = useState<AppId | null>(currentApp);
   const [closing, setClosing] = useState(false);
 
@@ -43,7 +46,8 @@ function AppHost() {
   }, [currentApp, rendered]);
 
   if (!rendered) return null;
-  const Component = AVAILABLE_APPS[rendered];
+  // O Rumor depende do banco: no modo demonstração mostra a tela "em desenvolvimento".
+  const Component = rendered === 'social' && !backend.social ? undefined : AVAILABLE_APPS[rendered];
   return (
     <div key={rendered} className={`app-layer ${closing ? 'is-closing' : 'is-opening'}`}>
       {Component ? <Component /> : <PlannedApp app={APPS[rendered]} />}
